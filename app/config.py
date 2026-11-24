@@ -53,7 +53,13 @@ class Settings:
     SESSION_REMEMBER_HOURS: int = 24 * 7
 
     # Supabase Cloud Backend (used on Vercel / production)
-    SUPABASE_URL: str = os.getenv("SUPABASE_URL", "").strip().rstrip("/")
+    SUPABASE_URL: str = (
+        os.getenv("SUPABASE_URL", "")
+        .strip()
+        .rstrip("/")
+        .removesuffix("/rest/v1")
+        .rstrip("/")
+    )
     SUPABASE_SERVICE_ROLE_KEY: str = os.getenv("SUPABASE_SERVICE_ROLE_KEY", "").strip()
     SUPABASE_BUCKET: str = os.getenv("SUPABASE_BUCKET", "portfolio-media").strip() or "portfolio-media"
     USE_SUPABASE: bool = bool(SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY)

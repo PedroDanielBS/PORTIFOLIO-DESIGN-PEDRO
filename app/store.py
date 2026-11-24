@@ -74,9 +74,11 @@ class SupabaseClient:
             full_url += "?" + urllib.parse.urlencode(params, safe="(),.*")
         headers = {
             "apikey": self.key,
-            "Authorization": f"Bearer {self.key}",
             "Accept": "application/json",
         }
+        # Legacy JWT service_role keys require Authorization: Bearer; new sb_secret_ keys use apikey only
+        if not self.key.startswith("sb_secret_"):
+            headers["Authorization"] = f"Bearer {self.key}"
         if prefer:
             headers["Prefer"] = prefer
         data = None
