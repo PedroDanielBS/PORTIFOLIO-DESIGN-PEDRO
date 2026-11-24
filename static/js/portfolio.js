@@ -298,8 +298,15 @@ function bindCarousel(stage, slides) {
   goTo(0);
 }
 
+function resolveProjectVideoUrl(project) {
+  if (!project) return "";
+  if (project.video_url && String(project.video_url).trim()) return project.video_url;
+  const fromMedia = (project.media_items || []).find((m) => m.type === "video" && m.url);
+  return fromMedia ? fromMedia.url : "";
+}
+
 function bindVideoShowcase(stage, project) {
-  const parsed = parseEmbedVideo(project.video_url);
+  const parsed = parseEmbedVideo(resolveProjectVideoUrl(project));
   if (!parsed) return;
 
   const overlay = stage.querySelector(".video-play-overlay");
@@ -307,9 +314,10 @@ function bindVideoShowcase(stage, project) {
   const hud = stage.querySelector(".video-hud");
 
   if (parsed.kind === "iframe") {
-    playLens?.addEventListener("click", () => {
+    const startEmbed = () => {
       stage.innerHTML = `<iframe src="${esc(parsed.src)}&autoplay=1" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="${esc(pickLang(project, "title", state.lang))}"></iframe>`;
-    });
+    };
+    overlay?.addEventListener("click", startEmbed);
     return;
   }
 
@@ -338,7 +346,7 @@ function bindVideoShowcase(stage, project) {
       if (toggleBtn) toggleBtn.innerHTML = isPlaying ? ICONS.pause : ICONS.play;
     };
 
-    playLens?.addEventListener("click", () => {
+    overlay?.addEventListener("click", () => {
       ctrl.play();
       syncUI(true);
     });
@@ -375,17 +383,28 @@ function bindVideoShowcase(stage, project) {
     }
   };
 
-  playLens?.addEventListener("click", () => {
-    video.play().catch(() => {});
+  const togglePlay = () => {
+    if (video.paused || video.ended) {
+      // Pause any other inline videos before playing this one
+      document.querySelectorAll(".video-stage video").forEach((other) => {
+        if (other !== video && !other.paused) other.pause();
+      });
+      video.play().catch(() => {});
+    } else {
+      video.pause();
+    }
+  };
+
+  overlay?.addEventListener("click", (e) => {
+    e.stopPropagation();
+    togglePlay();
   });
-  video.addEventListener("click", () => {
-    if (video.paused) video.play().catch(() => {});
-    else video.pause();
+  playLens?.addEventListener("click", (e) => {
+    e.stopPropagation();
+    togglePlay();
   });
-  toggleBtn?.addEventListener("click", () => {
-    if (video.paused) video.play().catch(() => {});
-    else video.pause();
-  });
+  video.addEventListener("click", togglePlay);
+  toggleBtn?.addEventListener("click", togglePlay);
   muteBtn?.addEventListener("click", () => {
     if (video.muted || video.volume === 0) {
       video.muted = false;
@@ -486,9 +505,15 @@ function buildWorkMarkup(project, index) {
       </div>
     `;
   } else if (project.display_type === "video") {
-    const parsed = parseEmbedVideo(project.video_url);
+    const resolvedVideo = resolveProjectVideoUrl(project);
+    const parsed = parseEmbedVideo(resolvedVideo);
     const isDemo = parsed?.kind === "demo";
     const isNative = parsed?.kind === "native";
+    const videoSrcWithFrame = isNative
+      ? parsed.src.includes("#")
+        ? parsed.src
+        : `${parsed.src}#t=0.1`
+      : "";
     mediaHtml = `
       <div class="video-stage" data-video-id="${project.id}">
         <div class="work-badge-row">
@@ -499,10 +524,12 @@ function buildWorkMarkup(project, index) {
           isDemo
             ? `<canvas aria-label="${esc(title)}"></canvas>`
             : isNative
-            ? `<video src="${esc(parsed.src)}" poster="${esc(cover)}" playsinline preload="metadata"></video>`
-            : `<img class="work-media-img" src="${esc(cover)}" alt="${esc(title)}" loading="lazy" />`
+            ? `<video src="${esc(videoSrcWithFrame)}" ${cover ? `poster="${esc(cover)}"` : ""} playsinline preload="metadata"></video>`
+            : cover
+            ? `<img class="work-media-img" src="${esc(cover)}" alt="${esc(title)}" loading="lazy" />`
+            : `<div style="width:100%;height:100%;background:#08090c;"></div>`
         }
-        <div class="video-play-overlay">
+        <div class="video-play-overlay" style="cursor:pointer;">
           <button type="button" class="video-play-lens liquid-glass" aria-label="${esc(dict.playReel)}">
             ${ICONS.play}
           </button>
@@ -683,6 +710,9 @@ function renderExperiences() {
 }
 
 function openProjectModal(project) {
+  // Pause any background inline videos so audio never overlaps
+  document.querySelectorAll(".video-stage video").forEach((v) => v.pause());
+
   const backdrop = document.getElementById("project-modal");
   const titleEl = document.getElementById("modal-title");
   const bodyEl = document.getElementById("modal-body");
@@ -696,8 +726,9 @@ function openProjectModal(project) {
 
   // Build ordered slide list (video first if video project, plus media_items or cover)
   const slides = [];
-  if (project.display_type === "video" && project.video_url) {
-    const parsed = parseEmbedVideo(project.video_url);
+  const resolvedVideo = resolveProjectVideoUrl(project);
+  if (project.display_type === "video" && resolvedVideo) {
+    const parsed = parseEmbedVideo(resolvedVideo);
     if (parsed?.kind === "iframe") {
       slides.push({ kind: "iframe", url: parsed.src, caption: pickLang(project, "subtitle", lang) });
     } else if (parsed?.kind === "native") {
@@ -830,6 +861,14 @@ function openProjectModal(project) {
 function closeProjectModal() {
   const backdrop = document.getElementById("project-modal");
   if (!backdrop) return;
+  // Stop all video/audio playback inside modal immediately
+  backdrop.querySelectorAll("video").forEach((v) => {
+    v.pause();
+    v.removeAttribute("src");
+    v.load();
+  });
+  const bodyEl = document.getElementById("modal-body");
+  if (bodyEl) bodyEl.innerHTML = "";
   backdrop.classList.remove("is-open");
   document.body.style.overflow = "";
 }

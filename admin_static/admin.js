@@ -411,6 +411,9 @@ async function handleMultiMediaFiles(files) {
         document.getElementById("proj-cover-url").value = up.url;
         updateCoverPreview(up.url);
       }
+      if (state.selectedType === "video" && !document.getElementById("proj-video-url").value && up.type === "video") {
+        document.getElementById("proj-video-url").value = up.url;
+      }
       renderMediaSlidesEditor();
     } catch (err) {
       setUploadStatus(`Erro em ${file.name}: ${err.message}`, true);
