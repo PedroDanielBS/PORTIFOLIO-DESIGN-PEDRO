@@ -137,17 +137,21 @@ function renderHeroAndProfile() {
 
   const availText = document.getElementById("availability-text");
   const availDot = document.getElementById("availability-dot");
-  if (availText) availText.textContent = pickLang(p, "availability", lang);
+  const availVal = pickLang(p, "availability", lang);
+  if (availText && availVal) availText.textContent = availVal;
   if (availDot) availDot.classList.toggle("is-busy", p.available === false);
 
   const heroRole = document.getElementById("hero-role");
-  if (heroRole) heroRole.textContent = pickLang(p, "role", lang);
+  const roleVal = pickLang(p, "role", lang);
+  if (heroRole && roleVal) heroRole.textContent = roleVal;
 
   const heroTitle = document.getElementById("hero-title");
-  if (heroTitle) heroTitle.textContent = pickLang(p, "headline", lang);
+  const titleVal = pickLang(p, "headline", lang);
+  if (heroTitle && titleVal) heroTitle.textContent = titleVal;
 
   const heroBio = document.getElementById("hero-bio");
-  if (heroBio) heroBio.textContent = pickLang(p, "bio", lang);
+  const bioVal = pickLang(p, "bio", lang);
+  if (heroBio && bioVal) heroBio.textContent = bioVal;
 
   const heroWhatsapp = document.getElementById("hero-whatsapp-cta");
   if (heroWhatsapp && safeUrl(p.whatsapp_url)) {

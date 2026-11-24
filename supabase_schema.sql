@@ -110,14 +110,18 @@ CREATE TABLE IF NOT EXISTS public.experiences (
 );
 
 -- 2. Segurança Máxima: Ativar RLS em TODAS as tabelas sem políticas públicas
--- Assim ninguém acessa o banco direto pela internet; apenas o backend na Vercel
--- usando SUPABASE_SERVICE_ROLE_KEY (guardada como segredo no servidor).
+-- e conceder permissão EXCLUSIVA ao role de servidor `service_role`.
 ALTER TABLE public.admin_users ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.admin_sessions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.login_attempts ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.site_profile ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.projects ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.experiences ENABLE ROW LEVEL SECURITY;
+
+REVOKE ALL ON ALL TABLES IN SCHEMA public FROM anon, authenticated;
+GRANT USAGE ON SCHEMA public TO service_role;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO service_role;
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO service_role;
 
 -- 3. Bucket de Storage para Imagens e Vídeos (leitura pública, escrita apenas via URL assinada pelo Admin)
 INSERT INTO storage.buckets (id, name, public, file_size_limit)
