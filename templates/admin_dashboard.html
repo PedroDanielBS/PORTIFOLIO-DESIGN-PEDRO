@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="csrf-token" content="__CSRF_TOKEN__" />
+  <meta name="admin-path" content="__ADMIN_PATH__" />
+  <title>Painel Admin — Pedro Daniel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/css/tokens.css" />
+  <link rel="stylesheet" href="/static/css/portfolio.css" />
+  <link rel="stylesheet" href="/static/css/admin.css" />
+</head>
+<body>
+  <div class="admin-shell">
+    <aside class="admin-sidebar">
+      <div>
+        <div class="sidebar-brand">
+          <span class="brand-mark">PD</span>
+          <div class="sidebar-brand-meta">
+            <span class="sidebar-brand-name">Pedro Daniel</span>
+            <span class="sidebar-brand-sub">Painel Admin</span>
+          </div>
+        </div>
+
+        <div class="sidebar-section-label">Gestão</div>
+        <nav class="sidebar-nav" aria-label="Menu administrativo">
+          <button type="button" class="sidebar-item is-active" data-view="overview">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+            <span>Visão geral</span>
+          </button>
+          <button type="button" class="sidebar-item" data-view="projects">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 9 5-9 5-9-5 9-5z"/><path d="m3 12 9 5 9-5"/><path d="m3 17 9 5 9-5"/></svg>
+            <span>Trabalhos</span>
+          </button>
+          <button type="button" class="sidebar-item" data-view="experiences">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="7" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+            <span>Experiências</span>
+          </button>
+          <button type="button" class="sidebar-item" data-view="profile">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
+            <span>Perfil e contato</span>
+          </button>
+        </nav>
+
+        <div class="sidebar-section-label">Sistema</div>
+        <nav class="sidebar-nav">
+          <button type="button" class="sidebar-item" data-view="security">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <span>Segurança</span>
+          </button>
+          <a href="/" target="_blank" rel="noopener noreferrer" class="sidebar-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
+            <span>Abrir site público</span>
+          </a>
+        </nav>
+      </div>
+
+      <div class="sidebar-footer">
+        <div id="sidebar-email" class="admin-email-chip">__ADMIN_EMAIL__</div>
+        <button type="button" id="logout-btn" class="btn btn-ghost btn-sm" style="width:100%;">Sair com segurança</button>
+      </div>
+    </aside>
+
+    <main class="admin-main">
+      <!-- OVERVIEW -->
+      <section id="view-overview" class="view-panel is-active">
+        <div class="admin-topbar">
+          <div>
+            <h1 class="admin-page-title">Visão geral</h1>
+            <p class="admin-page-sub">Controle central do portfólio público e curadoria de projetos</p>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button type="button" class="btn btn-primary" id="quick-new-project">Novo trabalho</button>
+            <button type="button" class="btn btn-glass" id="quick-new-exp">Nova experiência</button>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">Trabalhos publicados</div>
+            <div id="stat-published" class="stat-value mono">00</div>
+            <div class="stat-note">Visíveis no site público</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Rascunhos privados</div>
+            <div id="stat-drafts" class="stat-value mono">00</div>
+            <div class="stat-note">Ocultos da API pública</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Experiências</div>
+            <div id="stat-experiences" class="stat-value mono">00</div>
+            <div class="stat-note">Linha do tempo profissional</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Sessões ativas</div>
+            <div id="stat-sessions" class="stat-value mono">01</div>
+            <div class="stat-note">Cookies HttpOnly + CSRF</div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <h2 class="panel-title">Formatos suportados no portfólio</h2>
+          </div>
+          <div class="type-selector">
+            <div class="type-option">
+              <span class="type-option-name">Card editorial</span>
+              <span class="type-option-desc">Destaque assimétrico com capa em alta definição e modal de case completo.</span>
+            </div>
+            <div class="type-option">
+              <span class="type-option-name">Carrossel interativo</span>
+              <span class="type-option-desc">Múltiplos slides com arraste, setas Liquid Glass e legendas bilíngues PT/EN.</span>
+            </div>
+            <div class="type-option">
+              <span class="type-option-name">Vídeo showcase</span>
+              <span class="type-option-desc">Upload direto de MP4/WebM ou embed limpo de YouTube e Vimeo.</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PROJECTS -->
+      <section id="view-projects" class="view-panel">
+        <div class="admin-topbar">
+          <div>
+            <h1 class="admin-page-title">Trabalhos</h1>
+            <p class="admin-page-sub">Adicione, ordene e publique cards, carrosséis e vídeos</p>
+          </div>
+          <button type="button" class="btn btn-primary" id="new-project-btn">Adicionar trabalho</button>
+        </div>
+
+        <div id="project-editor-panel" class="panel" style="display:none;">
+          <div class="panel-head">
+            <h2 id="project-editor-title" class="panel-title">Novo trabalho</h2>
+            <button type="button" class="btn btn-ghost btn-sm" id="cancel-project-btn">Cancelar</button>
+          </div>
+
+          <form id="project-form" style="display:grid;gap:20px;">
+            <input type="hidden" id="proj-id" />
+
+            <div class="field">
+              <label>Formato de exibição</label>
+              <div class="type-selector" id="proj-type-selector">
+                <button type="button" class="type-option is-active" data-type="card">
+                  <span class="type-option-name">Card</span>
+                  <span class="type-option-desc">Capa principal + case detalhado</span>
+                </button>
+                <button type="button" class="type-option" data-type="carousel">
+                  <span class="type-option-name">Carrossel</span>
+                  <span class="type-option-desc">Galeria deslizável na home</span>
+                </button>
+                <button type="button" class="type-option" data-type="video">
+                  <span class="type-option-name">Vídeo</span>
+                  <span class="type-option-desc">Player MP4/WebM, YouTube ou Vimeo</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="form-grid">
+              <div class="field">
+                <label for="proj-title-pt">Título (Português) *</label>
+                <input id="proj-title-pt" class="input" required placeholder="Ex.: Redesign App Financeiro" />
+              </div>
+              <div class="field">
+                <label for="proj-title-en">Title (English)</label>
+                <input id="proj-title-en" class="input" placeholder="Ex.: Finance App Redesign" />
+              </div>
+
+              <div class="field">
+                <label for="proj-sub-pt">Subtítulo (PT)</label>
+                <input id="proj-sub-pt" class="input" placeholder="Resumo em uma frase" />
+              </div>
+              <div class="field">
+                <label for="proj-sub-en">Subtitle (EN)</label>
+                <input id="proj-sub-en" class="input" placeholder="One-line summary" />
+              </div>
+
+              <div class="field">
+                <label for="proj-category">Categoria</label>
+                <select id="proj-category" class="select">
+                  <option value="UI/UX">UI/UX</option>
+                  <option value="Product Design">Product Design</option>
+                  <option value="Graphic Design">Graphic Design</option>
+                  <option value="Branding">Branding</option>
+                  <option value="Motion & Video">Motion &amp; Video</option>
+                  <option value="Editorial">Editorial</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="proj-year">Ano</label>
+                <input id="proj-year" class="input" value="2026" />
+              </div>
+
+              <div class="field">
+                <label for="proj-client">Cliente</label>
+                <input id="proj-client" class="input" placeholder="Nome da empresa ou Autoral" />
+              </div>
+              <div class="field">
+                <label for="proj-external">Link externo (Figma, Behance ou site)</label>
+                <input id="proj-external" class="input" placeholder="https://..." />
+              </div>
+
+              <div class="field">
+                <label for="proj-role-pt">Seu papel (PT)</label>
+                <input id="proj-role-pt" class="input" placeholder="Designer Gráfico &amp; UI/UX" />
+              </div>
+              <div class="field">
+                <label for="proj-role-en">Role (EN)</label>
+                <input id="proj-role-en" class="input" placeholder="Graphic &amp; UI/UX Designer" />
+              </div>
+
+              <div class="field is-full">
+                <label for="proj-deliverables">Entregáveis (separados por vírgula)</label>
+                <input id="proj-deliverables" class="input" placeholder="Design System, UI/UX, Identidade Visual" />
+              </div>
+
+              <div class="field">
+                <label for="proj-desc-pt">Descrição do case (PT)</label>
+                <textarea id="proj-desc-pt" class="textarea" placeholder="Contexto, desafio e solução visual..."></textarea>
+              </div>
+              <div class="field">
+                <label for="proj-desc-en">Case study description (EN)</label>
+                <textarea id="proj-desc-en" class="textarea" placeholder="Context, challenge, and visual craft..."></textarea>
+              </div>
+            </div>
+
+            <!-- Cover Upload -->
+            <div class="field">
+              <label for="proj-cover-url">Imagem de capa / thumbnail</label>
+              <div style="display:flex;gap:8px;align-items:center;">
+                <input id="proj-cover-url" class="input" placeholder="/uploads/... ou https://..." />
+                <button type="button" id="proj-cover-btn" class="btn btn-glass">Enviar capa</button>
+                <input type="file" id="proj-cover-file" accept="image/*" hidden />
+              </div>
+              <div id="proj-cover-preview" style="margin-top:8px;display:none;"></div>
+            </div>
+
+            <!-- Video Field (shown for video type) -->
+            <div id="proj-video-block" class="field" style="display:none;">
+              <label for="proj-video-url">Vídeo (envie MP4/WebM ou cole link do YouTube / Vimeo)</label>
+              <div style="display:flex;gap:8px;align-items:center;">
+                <input id="proj-video-url" class="input" placeholder="https://youtube.com/watch?v=... ou envie um arquivo" />
+                <button type="button" id="proj-video-btn" class="btn btn-glass">Enviar vídeo</button>
+                <input type="file" id="proj-video-file" accept="video/mp4,video/webm,video/quicktime" hidden />
+              </div>
+            </div>
+
+            <!-- Carousel / Gallery Slides -->
+            <div class="field">
+              <label>Slides do carrossel / galeria de mídia</label>
+              <div id="media-dropzone" class="dropzone" role="button" tabindex="0">
+                <div style="font-size:14px;color:var(--text-primary);margin-bottom:4px;">Arraste imagens ou vídeos aqui, ou clique para selecionar</div>
+                <div style="font-size:12px;color:var(--text-muted);">Suporta JPG, PNG, WebP, AVIF, GIF (até 25 MB) e MP4, WebM, MOV (até 120 MB)</div>
+              </div>
+              <input type="file" id="media-multi-file" multiple accept="image/*,video/mp4,video/webm,video/quicktime" hidden />
+              <div id="upload-status" style="font-size:13px;color:var(--text-secondary);min-height:18px;"></div>
+              <div id="media-slides-list" class="media-slide-list"></div>
+            </div>
+
+            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;padding-top:12px;border-top:1px solid var(--border-subtle);">
+              <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
+                <label class="check-row">
+                  <input id="proj-featured" type="checkbox" />
+                  <span>Destaque na grade</span>
+                </label>
+                <select id="proj-status" class="select" style="width:auto;">
+                  <option value="published">Publicado no site</option>
+                  <option value="draft">Rascunho (privado)</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-primary" id="save-project-btn">Salvar trabalho</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <h2 class="panel-title">Lista de trabalhos</h2>
+          </div>
+          <div id="projects-list" class="item-list"></div>
+        </div>
+      </section>
+
+      <!-- EXPERIENCES -->
+      <section id="view-experiences" class="view-panel">
+        <div class="admin-topbar">
+          <div>
+            <h1 class="admin-page-title">Experiências profissionais</h1>
+            <p class="admin-page-sub">Cadastre sua trajetória de 5 anos no mercado para exibir na linha do tempo pública</p>
+          </div>
+          <button type="button" class="btn btn-primary" id="new-exp-btn">Adicionar experiência</button>
+        </div>
+
+        <div id="exp-editor-panel" class="panel" style="display:none;">
+          <div class="panel-head">
+            <h2 id="exp-editor-title" class="panel-title">Nova experiência</h2>
+            <button type="button" class="btn btn-ghost btn-sm" id="cancel-exp-btn">Cancelar</button>
+          </div>
+
+          <form id="exp-form" style="display:grid;gap:16px;">
+            <input type="hidden" id="exp-id" />
+            <div class="form-grid">
+              <div class="field is-full">
+                <label for="exp-company">Empresa / Estúdio / Freelance *</label>
+                <input id="exp-company" class="input" required placeholder="Ex.: Estúdio Criativo ou Atuação Independente" />
+              </div>
+
+              <div class="field">
+                <label for="exp-role-pt">Cargo (PT) *</label>
+                <input id="exp-role-pt" class="input" required placeholder="Ex.: Designer Gráfico Sênior" />
+              </div>
+              <div class="field">
+                <label for="exp-role-en">Role (EN)</label>
+                <input id="exp-role-en" class="input" placeholder="Ex.: Senior Graphic Designer" />
+              </div>
+
+              <div class="field">
+                <label for="exp-period-pt">Período (PT) *</label>
+                <input id="exp-period-pt" class="input" required placeholder="Ex.: 2023 — Atual" />
+              </div>
+              <div class="field">
+                <label for="exp-period-en">Period (EN)</label>
+                <input id="exp-period-en" class="input" placeholder="Ex.: 2023 — Present" />
+              </div>
+
+              <div class="field">
+                <label for="exp-loc-pt">Local (PT)</label>
+                <input id="exp-loc-pt" class="input" placeholder="Ex.: Remoto · Brasil" />
+              </div>
+              <div class="field">
+                <label for="exp-loc-en">Location (EN)</label>
+                <input id="exp-loc-en" class="input" placeholder="Ex.: Remote · Brazil" />
+              </div>
+
+              <div class="field">
+                <label for="exp-sum-pt">Resumo da atuação (PT)</label>
+                <textarea id="exp-sum-pt" class="textarea" placeholder="Principais responsabilidades e impacto..."></textarea>
+              </div>
+              <div class="field">
+                <label for="exp-sum-en">Role summary (EN)</label>
+                <textarea id="exp-sum-en" class="textarea" placeholder="Key responsibilities and impact..."></textarea>
+              </div>
+
+              <div class="field">
+                <label for="exp-hi-pt">Destaques (PT — um por linha)</label>
+                <textarea id="exp-hi-pt" class="textarea" placeholder="Liderança da nova identidade visual&#10;Criação de design system multiplataforma"></textarea>
+              </div>
+              <div class="field">
+                <label for="exp-hi-en">Highlights (EN — one per line)</label>
+                <textarea id="exp-hi-en" class="textarea" placeholder="Led visual identity refresh&#10;Built multi-platform design system"></textarea>
+              </div>
+            </div>
+
+            <div style="display:flex;align-items:center;justify-content:space-between;padding-top:12px;border-top:1px solid var(--border-subtle);">
+              <label class="check-row">
+                <input id="exp-visible" type="checkbox" checked />
+                <span>Visível no portfólio público</span>
+              </label>
+              <button type="submit" class="btn btn-primary">Salvar experiência</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <h2 class="panel-title">Experiências cadastradas</h2>
+          </div>
+          <div id="experiences-list" class="item-list"></div>
+        </div>
+      </section>
+
+      <!-- PROFILE -->
+      <section id="view-profile" class="view-panel">
+        <div class="admin-topbar">
+          <div>
+            <h1 class="admin-page-title">Perfil e contato</h1>
+            <p class="admin-page-sub">Informações exibidas na capa, sobre e rodapé do portfólio</p>
+          </div>
+        </div>
+
+        <div class="panel">
+          <form id="profile-form" style="display:grid;gap:20px;">
+            <div class="form-grid">
+              <div class="field">
+                <label for="prof-name">Nome de exibição</label>
+                <input id="prof-name" class="input" required />
+              </div>
+              <div class="field">
+                <label for="prof-years">Anos de experiência</label>
+                <input id="prof-years" type="number" min="0" max="60" class="input" />
+              </div>
+
+              <div class="field">
+                <label for="prof-role-pt">Cargo / título (PT)</label>
+                <input id="prof-role-pt" class="input" required />
+              </div>
+              <div class="field">
+                <label for="prof-role-en">Role / title (EN)</label>
+                <input id="prof-role-en" class="input" />
+              </div>
+
+              <div class="field">
+                <label for="prof-head-pt">Headline principal (PT)</label>
+                <input id="prof-head-pt" class="input" />
+              </div>
+              <div class="field">
+                <label for="prof-head-en">Main headline (EN)</label>
+                <input id="prof-head-en" class="input" />
+              </div>
+
+              <div class="field">
+                <label for="prof-bio-pt">Bio (PT)</label>
+                <textarea id="prof-bio-pt" class="textarea"></textarea>
+              </div>
+              <div class="field">
+                <label for="prof-bio-en">Bio (EN)</label>
+                <textarea id="prof-bio-en" class="textarea"></textarea>
+              </div>
+
+              <div class="field">
+                <label for="prof-loc-pt">Localização (PT)</label>
+                <input id="prof-loc-pt" class="input" />
+              </div>
+              <div class="field">
+                <label for="prof-loc-en">Location (EN)</label>
+                <input id="prof-loc-en" class="input" />
+              </div>
+
+              <div class="field">
+                <label for="prof-avail-pt">Status de disponibilidade (PT)</label>
+                <input id="prof-avail-pt" class="input" />
+              </div>
+              <div class="field">
+                <label for="prof-avail-en">Availability status (EN)</label>
+                <input id="prof-avail-en" class="input" />
+              </div>
+
+              <div class="field">
+                <label for="prof-email">E-mail de contato público</label>
+                <input id="prof-email" type="email" class="input" />
+              </div>
+              <div class="field">
+                <label for="prof-phone">Telefone exibido</label>
+                <input id="prof-phone" class="input" />
+              </div>
+
+              <div class="field is-full">
+                <label for="prof-whatsapp">Link do WhatsApp</label>
+                <input id="prof-whatsapp" class="input" placeholder="https://wa.me/5577998025597" />
+              </div>
+
+              <div class="field">
+                <label for="prof-behance">Behance URL</label>
+                <input id="prof-behance" class="input" placeholder="https://behance.net/..." />
+              </div>
+              <div class="field">
+                <label for="prof-dribbble">Dribbble URL</label>
+                <input id="prof-dribbble" class="input" placeholder="https://dribbble.com/..." />
+              </div>
+              <div class="field">
+                <label for="prof-linkedin">LinkedIn URL</label>
+                <input id="prof-linkedin" class="input" placeholder="https://linkedin.com/in/..." />
+              </div>
+              <div class="field">
+                <label for="prof-instagram">Instagram URL</label>
+                <input id="prof-instagram" class="input" placeholder="https://instagram.com/..." />
+              </div>
+
+              <div class="field is-full">
+                <label for="prof-hero-img">Imagem de fundo da Hero</label>
+                <div style="display:flex;gap:8px;align-items:center;">
+                  <input id="prof-hero-img" class="input" />
+                  <button type="button" id="prof-hero-btn" class="btn btn-glass">Enviar imagem</button>
+                  <input type="file" id="prof-hero-file" accept="image/*" hidden />
+                </div>
+              </div>
+            </div>
+
+            <div style="display:flex;align-items:center;justify-content:space-between;padding-top:12px;border-top:1px solid var(--border-subtle);">
+              <label class="check-row">
+                <input id="prof-available" type="checkbox" />
+                <span>Indicador verde de disponível para projetos</span>
+              </label>
+              <button type="submit" class="btn btn-primary">Salvar perfil</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- SECURITY -->
+      <section id="view-security" class="view-panel">
+        <div class="admin-topbar">
+          <div>
+            <h1 class="admin-page-title">Segurança</h1>
+            <p class="admin-page-sub">Credenciais criptografadas no servidor, sessões ativas e registro de acessos</p>
+          </div>
+          <button type="button" class="btn btn-danger btn-sm" id="revoke-others-btn">Encerrar outras sessões</button>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <h2 class="panel-title">Alterar e-mail ou senha do administrador</h2>
+          </div>
+          <form id="security-form" class="form-grid">
+            <div class="field is-full">
+              <label for="sec-current">Senha atual *</label>
+              <input id="sec-current" type="password" class="input" required autocomplete="current-password" />
+            </div>
+            <div class="field">
+              <label for="sec-email">Novo e-mail administrativo (opcional)</label>
+              <input id="sec-email" type="email" class="input" placeholder="Manter atual" />
+            </div>
+            <div class="field">
+              <label for="sec-new-pass">Nova senha (mínimo 10 caracteres)</label>
+              <input id="sec-new-pass" type="password" class="input" autocomplete="new-password" />
+            </div>
+            <div class="field is-full" style="align-items:flex-end;">
+              <button type="submit" class="btn btn-primary">Atualizar credenciais</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <h2 class="panel-title">Sessões autenticadas</h2>
+          </div>
+          <div style="overflow-x:auto;">
+            <table class="audit-table">
+              <thead>
+                <tr>
+                  <th>IP</th>
+                  <th>Navegador</th>
+                  <th>Criada em</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="sessions-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <h2 class="panel-title">Últimas tentativas de login</h2>
+          </div>
+          <div style="overflow-x:auto;">
+            <table class="audit-table">
+              <thead>
+                <tr>
+                  <th>Data (UTC)</th>
+                  <th>IP</th>
+                  <th>E-mail informado</th>
+                  <th>Resultado</th>
+                </tr>
+              </thead>
+              <tbody id="attempts-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="toast" class="toast liquid-glass" role="status" aria-live="polite"></div>
+
+  <!-- Protected Admin Script: only served to authenticated sessions -->
+  <script type="module" src="/admin-assets/admin.js?v=3"></script>
+</body>
+</html>

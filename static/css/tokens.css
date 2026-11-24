@@ -1,0 +1,224 @@
+/* Design Tokens — Pedro Daniel Dark Editorial Liquid Glass System */
+:root {
+  /* Tinted Obsidian / Graphite Neutral Ramp */
+  --bg: #08090b;
+  --surface-1: #0f1115;
+  --surface-2: #16181e;
+  --surface-3: #1e2129;
+
+  /* Three Text Roles */
+  --text-primary: #f3f4f7;
+  --text-secondary: #a1a6b3;
+  --text-muted: #6c717e;
+
+  /* Quiet Hairlines */
+  --border-subtle: rgba(243, 244, 247, 0.08);
+  --border-medium: rgba(243, 244, 247, 0.14);
+  --border-strong: rgba(243, 244, 247, 0.24);
+
+  /* Primary Action & Restrained Optical Accent */
+  --cta-bg: #f3f4f7;
+  --cta-ink: #090a0d;
+  --cta-bg-hover: #ffffff;
+  --accent: #7fb2ff;
+  --accent-soft: rgba(127, 178, 255, 0.14);
+
+  /* Semantic (Muted to stay inside dark editorial palette) */
+  --ok: #6fd39e;
+  --ok-soft: rgba(111, 211, 158, 0.12);
+  --warn: #e3b868;
+  --warn-soft: rgba(227, 184, 104, 0.12);
+  --danger: #e47d7d;
+  --danger-soft: rgba(228, 125, 125, 0.14);
+
+  /* Liquid Glass Optical Material */
+  --glass-bg: linear-gradient(
+    140deg,
+    rgba(255, 255, 255, 0.085) 0%,
+    rgba(255, 255, 255, 0.028) 52%,
+    rgba(255, 255, 255, 0.055) 100%
+  );
+  --glass-bg-dense: linear-gradient(
+    140deg,
+    rgba(24, 27, 34, 0.78) 0%,
+    rgba(14, 16, 20, 0.72) 100%
+  );
+  --glass-rim: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.34) 0%,
+    rgba(255, 255, 255, 0.07) 38%,
+    rgba(255, 255, 255, 0.04) 68%,
+    rgba(255, 255, 255, 0.22) 100%
+  );
+  --glass-shadow: 0 24px 64px -20px rgba(0, 0, 0, 0.65),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16);
+
+  /* Typography */
+  --font-sans: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* 4px Spacing Scale */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 20px;
+  --s-6: 24px;
+  --s-8: 32px;
+  --s-10: 40px;
+  --s-12: 48px;
+  --s-16: 64px;
+  --s-24: 96px;
+  --s-32: 128px;
+
+  /* Nested Radii */
+  --r-xs: 6px;
+  --r-sm: 10px;
+  --r-md: 14px;
+  --r-lg: 20px;
+  --r-xl: 28px;
+  --r-pill: 999px;
+
+  /* Single Damped Motion Curve */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --t-fast: 160ms;
+  --t-med: 320ms;
+  --t-slow: 560ms;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: var(--bg);
+  color: var(--text-primary);
+  overflow-x: hidden;
+}
+
+img,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Liquid Glass Optical Surface */
+.liquid-glass {
+  position: relative;
+  background: var(--glass-bg);
+  backdrop-filter: blur(22px) saturate(175%) contrast(104%);
+  -webkit-backdrop-filter: blur(22px) saturate(175%) contrast(104%);
+  box-shadow: var(--glass-shadow);
+  isolation: isolate;
+}
+
+.liquid-glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: var(--glass-rim);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.liquid-glass::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    260px circle at var(--mx, 50%) var(--my, 0%),
+    rgba(255, 255, 255, 0.13),
+    rgba(255, 255, 255, 0.03) 40%,
+    transparent 70%
+  );
+  opacity: var(--glass-light, 0);
+  transition: opacity var(--t-med) var(--ease);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.liquid-glass:hover::after {
+  opacity: 1;
+}
+
+.liquid-glass-refract {
+  backdrop-filter: url(#liquid-glass-lens) blur(18px) saturate(185%) brightness(1.06);
+  -webkit-backdrop-filter: blur(22px) saturate(180%) brightness(1.06);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

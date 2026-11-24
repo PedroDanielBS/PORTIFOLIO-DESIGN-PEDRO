@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pedro Daniel — Designer Gráfico &amp; UI/UX</title>
+  <meta name="description" content="Portfólio de Pedro Daniel — Designer Gráfico &amp; UI/UX com 5 anos de atuação no mercado." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/css/tokens.css?v=4" />
+  <link rel="stylesheet" href="/static/css/portfolio.css?v=4" />
+</head>
+<body>
+  <!-- Optical Liquid Glass SVG Refraction Filter -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <filter id="liquid-glass-lens" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency="0.012 0.012" numOctaves="2" seed="7" result="noise" />
+        <feGaussianBlur in="noise" stdDeviation="2.2" result="softNoise" />
+        <feDisplacementMap in="SourceGraphic" in2="softNoise" scale="7" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+    </defs>
+  </svg>
+
+  <div class="page-shell">
+    <!-- Floating Liquid Glass Navigation -->
+    <header class="nav-wrap">
+      <nav class="nav-dock liquid-glass liquid-glass-refract" aria-label="Principal">
+        <a href="#top" class="nav-brand">
+          <span class="brand-mark">PD</span>
+          <span id="brand-name">Pedro Daniel</span>
+        </a>
+
+        <div class="nav-links">
+          <a href="#trabalhos" class="nav-link is-active" data-section="trabalhos" data-i18n="nav.works">Trabalhos</a>
+          <a href="#experiencia" class="nav-link" data-section="experiencia" data-i18n="nav.experience">Experiência</a>
+          <a href="#contato" class="nav-link" data-section="contato" data-i18n="nav.contact">Contato</a>
+        </div>
+
+        <div class="nav-actions">
+          <div class="lang-switch" role="group" aria-label="Idioma">
+            <button type="button" class="lang-btn is-active" data-lang="pt" aria-pressed="true">PT</button>
+            <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+          </div>
+          <a href="#contato" class="btn btn-primary nav-cta" data-i18n="nav.cta">Iniciar conversa</a>
+          <button type="button" id="mobile-menu-btn" class="nav-menu-btn" aria-expanded="false" aria-label="Menu">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 7h16"/><path d="M4 17h16"/></svg>
+          </button>
+        </div>
+      </nav>
+    </header>
+
+    <div id="mobile-drawer" class="mobile-drawer liquid-glass">
+      <a href="#trabalhos" class="nav-link" data-i18n="nav.works">Trabalhos</a>
+      <a href="#experiencia" class="nav-link" data-i18n="nav.experience">Experiência</a>
+      <a href="#contato" class="nav-link" data-i18n="nav.contact">Contato</a>
+      <a href="#contato" class="btn btn-primary" style="margin-top:8px" data-i18n="nav.cta">Iniciar conversa</a>
+    </div>
+
+    <!-- Hero Scene -->
+    <main id="top">
+      <section class="hero">
+        <div class="hero-scene">
+          <img
+            id="hero-scene-img"
+            class="hero-scene-img"
+            src="/static/assets/showcase/hero-glass.jpg"
+            alt="Escultura óptica de vidro sobre basalto escuro"
+          />
+          <div class="hero-scene-vignette"></div>
+        </div>
+
+        <div class="container hero-inner">
+          <div class="hero-copy reveal is-visible">
+            <div class="status-line liquid-glass">
+              <span id="availability-dot" class="status-dot"></span>
+              <span id="availability-text">Disponível para projetos selecionados</span>
+            </div>
+
+            <p id="hero-role" class="hero-role">Designer Gráfico &amp; UI/UX</p>
+            <h1 id="hero-title" class="hero-title">Design gráfico e interfaces com precisão editorial</h1>
+            <p id="hero-bio" class="hero-bio">
+              Sou Pedro Daniel, designer gráfico com 5 anos de atuação no mercado. Construo identidades visuais, sistemas de interface e experiências digitais onde tipografia, proporção e clareza trabalham juntas.
+            </p>
+
+            <div class="hero-actions">
+              <a href="#trabalhos" class="btn btn-primary" data-i18n="hero.explore">Explorar trabalhos</a>
+              <a
+                id="hero-whatsapp-cta"
+                href="https://wa.me/5577998025597"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn btn-glass"
+                data-i18n="hero.talk"
+              >Falar no WhatsApp</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="container hero-metrics-wrap">
+          <div class="hero-metrics liquid-glass">
+            <div class="metric-cell">
+              <span class="metric-label" data-i18n="hero.metricExpLabel">Experiência</span>
+              <span id="metric-exp" class="metric-value tabular">05 anos de mercado</span>
+            </div>
+            <div class="metric-cell">
+              <span class="metric-label" data-i18n="hero.metricFocusLabel">Atuação</span>
+              <span class="metric-value" data-i18n="hero.metricFocusValue">Design Gráfico &amp; UI/UX</span>
+            </div>
+            <div class="metric-cell">
+              <span class="metric-label" data-i18n="hero.metricLocationLabel">Base</span>
+              <span id="metric-location" class="metric-value">Brasil · Remoto</span>
+            </div>
+            <div class="metric-cell">
+              <span class="metric-label" data-i18n="hero.metricWorksLabel">Projetos publicados</span>
+              <span id="metric-works" class="metric-value mono">03</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Works Showcase -->
+      <section id="trabalhos" class="section">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <span class="section-index" data-i18n="works.index">01 — Portfólio</span>
+              <h2 class="section-title" data-i18n="works.title">Trabalhos selecionados</h2>
+              <p class="section-lead" data-i18n="works.lead">
+                Projetos em cards editoriais, carrosséis interativos e vídeos de direção visual.
+              </p>
+            </div>
+            <div id="works-filter-bar" class="filter-bar liquid-glass" role="tablist" aria-label="Filtrar trabalhos"></div>
+          </div>
+
+          <div id="works-grid" class="works-grid"></div>
+        </div>
+      </section>
+
+      <!-- Experience Section -->
+      <section id="experiencia" class="section">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <span class="section-index" data-i18n="experience.index">02 — Trajetória</span>
+              <h2 class="section-title" data-i18n="experience.title">Experiência profissional</h2>
+              <p class="section-lead" data-i18n="experience.lead">
+                Cinco anos construindo marcas, sistemas visuais e interfaces digitais com consistência.
+              </p>
+            </div>
+          </div>
+
+          <div id="experience-content"></div>
+        </div>
+      </section>
+
+      <!-- Contact Section -->
+      <section id="contato" class="section" style="border-bottom: 0;">
+        <div class="container">
+          <div class="contact-panel liquid-glass reveal">
+            <div>
+              <span class="section-index" data-i18n="contact.index">03 — Contato</span>
+              <h2 class="contact-heading" data-i18n="contact.title">Vamos construir seu próximo projeto</h2>
+              <p class="contact-text" data-i18n="contact.lead">
+                Disponível para projetos de identidade visual, interfaces digitais e consultoria de design.
+              </p>
+              <div id="social-links" class="social-row"></div>
+            </div>
+
+            <div class="contact-cards">
+              <div class="contact-row">
+                <a id="contact-email-link" href="mailto:Pedrodanielbonfa@gmail.com" class="contact-row-main">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-secondary);flex-shrink:0"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                  <div style="min-width:0">
+                    <span class="contact-row-label" data-i18n="contact.emailLabel">E-mail direto</span>
+                    <span id="contact-email-value" class="contact-row-value">Pedrodanielbonfa@gmail.com</span>
+                  </div>
+                </a>
+                <button type="button" id="copy-email-btn" class="btn btn-glass" style="height:34px;padding:0 12px;font-size:12px" data-i18n="contact.copy">Copiar</button>
+              </div>
+
+              <a id="contact-phone-link" href="https://wa.me/5577998025597" target="_blank" rel="noopener noreferrer" class="contact-row">
+                <div class="contact-row-main">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-secondary);flex-shrink:0"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.58 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                  <div>
+                    <span class="contact-row-label" data-i18n="contact.whatsappLabel">WhatsApp / Telefone</span>
+                    <span id="contact-phone-value" class="contact-row-value tabular">(77) 99802-5597</span>
+                  </div>
+                </div>
+                <span class="btn btn-primary" style="height:34px;padding:0 14px;font-size:12px" data-i18n="contact.openWhatsapp">Abrir conversa</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer-inner">
+        <span id="footer-name">Pedro Daniel · 2026</span>
+        <span data-i18n="footer.rights">Todos os direitos reservados</span>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Case Study Lightbox Modal -->
+  <div id="project-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="modal-title" style="margin:0;font-size:20px;font-weight:500;"></h3>
+        <button type="button" id="modal-close" class="modal-close" aria-label="Fechar">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </div>
+      <div id="modal-body" class="modal-content"></div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast liquid-glass" role="status" aria-live="polite"></div>
+
+  <script type="module" src="/static/js/portfolio.js?v=4"></script>
+</body>
+</html>
