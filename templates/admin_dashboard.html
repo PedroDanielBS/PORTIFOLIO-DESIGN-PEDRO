@@ -471,12 +471,13 @@
               </div>
 
               <div class="field is-full">
-                <label for="prof-hero-img">Imagem de fundo da Hero</label>
+                <label for="prof-avatar-img">Foto do card de perfil (Hero)</label>
                 <div style="display:flex;gap:8px;align-items:center;">
-                  <input id="prof-hero-img" class="input" />
-                  <button type="button" id="prof-hero-btn" class="btn btn-glass">Enviar imagem</button>
-                  <input type="file" id="prof-hero-file" accept="image/*" hidden />
+                  <input id="prof-avatar-img" class="input" placeholder="/static/assets/pedro-profile.jpg ou envie uma nova foto" />
+                  <button type="button" id="prof-avatar-btn" class="btn btn-glass">Enviar foto</button>
+                  <input type="file" id="prof-avatar-file" accept="image/*" hidden />
                 </div>
+                <div id="prof-avatar-preview" style="margin-top:10px;display:none;"></div>
               </div>
             </div>
 
@@ -568,6 +569,6 @@
   <div id="toast" class="toast liquid-glass" role="status" aria-live="polite"></div>
 
   <!-- Protected Admin Script: only served to authenticated sessions -->
-  <script type="module" src="/admin-assets/admin.js?v=4"></script>
+  <script type="module" src="/admin-assets/admin.js?v=5"></script>
 </body>
 </html>

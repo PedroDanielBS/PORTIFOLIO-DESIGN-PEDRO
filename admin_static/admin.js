@@ -653,6 +653,16 @@ document.getElementById("cancel-exp-btn").addEventListener("click", () => {
 });
 
 /* ── Profile Editor ─────────────────────────────────────────────────────── */
+function updateAvatarPreview(url) {
+  const box = document.getElementById("prof-avatar-preview");
+  if (!box) return;
+  const src = url || "/static/assets/pedro-profile.jpg";
+  box.style.display = "flex";
+  box.style.alignItems = "center";
+  box.style.gap = "12px";
+  box.innerHTML = `<img src="${esc(src)}" alt="Prévia da foto do card" style="width:92px;height:104px;object-fit:cover;object-position:center 18%;border-radius:14px;border:1px solid var(--border-medium);" /><span style="font-size:12px;color:var(--text-muted);">Prévia no recorte do card</span>`;
+}
+
 function populateProfileForm() {
   const p = state.profile || {};
   document.getElementById("prof-name").value = p.full_name || "";
@@ -674,21 +684,26 @@ function populateProfileForm() {
   document.getElementById("prof-dribbble").value = p.dribbble_url || "";
   document.getElementById("prof-linkedin").value = p.linkedin_url || "";
   document.getElementById("prof-instagram").value = p.instagram_url || "";
-  document.getElementById("prof-hero-img").value = p.hero_image_url || "";
+  document.getElementById("prof-avatar-img").value = p.avatar_url || "";
+  updateAvatarPreview(p.avatar_url || "");
   document.getElementById("prof-available").checked = p.available !== false;
 }
 
-const heroFileInput = document.getElementById("prof-hero-file");
-document.getElementById("prof-hero-btn").addEventListener("click", () => heroFileInput.click());
+const avatarFileInput = document.getElementById("prof-avatar-file");
+document.getElementById("prof-avatar-btn").addEventListener("click", () => avatarFileInput.click());
+document.getElementById("prof-avatar-img").addEventListener("input", (e) => {
+  updateAvatarPreview(e.target.value.trim());
+});
 
-heroFileInput.addEventListener("change", async (e) => {
+avatarFileInput.addEventListener("change", async (e) => {
   const file = e.target.files?.[0];
   if (!file) return;
   try {
-    toast("Enviando imagem da Hero...");
+    toast("Enviando foto do card...");
     const up = await uploadFile(file);
-    document.getElementById("prof-hero-img").value = up.url;
-    toast("Imagem atualizada — clique em Salvar perfil");
+    document.getElementById("prof-avatar-img").value = up.url;
+    updateAvatarPreview(up.url);
+    toast("Foto enviada — clique em Salvar perfil");
   } catch (err) {
     toast(err.message);
   } finally {
@@ -719,8 +734,8 @@ document.getElementById("profile-form").addEventListener("submit", async (e) => 
     dribbble_url: document.getElementById("prof-dribbble").value.trim(),
     linkedin_url: document.getElementById("prof-linkedin").value.trim(),
     instagram_url: document.getElementById("prof-instagram").value.trim(),
-    avatar_url: state.profile.avatar_url || "",
-    hero_image_url: document.getElementById("prof-hero-img").value.trim(),
+    avatar_url: document.getElementById("prof-avatar-img").value.trim(),
+    hero_image_url: state.profile.hero_image_url || "",
   };
 
   try {
