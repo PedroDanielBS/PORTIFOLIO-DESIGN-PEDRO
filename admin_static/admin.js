@@ -695,25 +695,8 @@ document.getElementById("prof-avatar-img").addEventListener("input", (e) => {
   updateAvatarPreview(e.target.value.trim());
 });
 
-avatarFileInput.addEventListener("change", async (e) => {
-  const file = e.target.files?.[0];
-  if (!file) return;
-  try {
-    toast("Enviando foto do card...");
-    const up = await uploadFile(file);
-    document.getElementById("prof-avatar-img").value = up.url;
-    updateAvatarPreview(up.url);
-    toast("Foto enviada — clique em Salvar perfil");
-  } catch (err) {
-    toast(err.message);
-  } finally {
-    e.target.value = "";
-  }
-});
-
-document.getElementById("profile-form").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const payload = {
+function buildProfilePayload() {
+  return {
     full_name: document.getElementById("prof-name").value.trim(),
     years_experience: Number(document.getElementById("prof-years").value || 5),
     role_pt: document.getElementById("prof-role-pt").value.trim(),
@@ -737,6 +720,30 @@ document.getElementById("profile-form").addEventListener("submit", async (e) => 
     avatar_url: document.getElementById("prof-avatar-img").value.trim(),
     hero_image_url: state.profile.hero_image_url || "",
   };
+}
+
+avatarFileInput.addEventListener("change", async (e) => {
+  const file = e.target.files?.[0];
+  if (!file) return;
+  try {
+    toast("Enviando foto do card...");
+    const up = await uploadFile(file);
+    document.getElementById("prof-avatar-img").value = up.url;
+    updateAvatarPreview(up.url);
+    // Auto-save profile immediately so the new card photo goes live right away
+    await api("/api/admin/profile", { method: "PUT", body: JSON.stringify(buildProfilePayload()) });
+    toast("Foto do card atualizada e salva!");
+    await loadBootstrap();
+  } catch (err) {
+    toast(err.message);
+  } finally {
+    e.target.value = "";
+  }
+});
+
+document.getElementById("profile-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const payload = buildProfilePayload();
 
   try {
     await api("/api/admin/profile", { method: "PUT", body: JSON.stringify(payload) });

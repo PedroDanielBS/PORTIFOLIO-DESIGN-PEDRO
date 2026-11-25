@@ -959,7 +959,10 @@ function renderHeroAndProfile() {
     });
 
     try {
-      const res = await fetch("/api/public/portfolio", { headers: { Accept: "application/json" } });
+      const res = await fetch("/api/public/portfolio", {
+        headers: { Accept: "application/json" },
+        cache: "no-store",
+      });
       if (res.ok) {
         state.data = await res.json();
       }

@@ -201,7 +201,8 @@ async def serve_upload(filename: str):
 # ─────────────────────────────────────────────────────────────────────────────
 
 @app.get("/api/public/portfolio")
-async def get_public_portfolio() -> dict[str, Any]:
+async def get_public_portfolio(response: Response) -> dict[str, Any]:
+    response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate"
     profile = store.get_profile()
     projects = store.list_projects(only_published=True)
     experiences = store.list_experiences(only_visible=True)
