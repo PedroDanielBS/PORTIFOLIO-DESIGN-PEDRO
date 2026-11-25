@@ -195,7 +195,6 @@
   display: flex;
 }
 
-/* ── Hero Scene ─────────────────────────────────────────────────────────── */
 /* ── Hero Section (Clean Dark Canvas + Split Signature Profile Card) ────── */
 .hero {
   position: relative;
@@ -203,7 +202,6 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding-top: 128px;
   padding-top: 112px;
   padding-bottom: var(--s-10);
   overflow: hidden;
@@ -211,257 +209,228 @@
   background-color: var(--bg);
 }
 
-.hero-scene {
-  .hero-grid-bg {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    background-image: linear-gradient(to right, rgba(243, 244, 247, 0.032) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(243, 244, 247, 0.032) 1px, transparent 1px);
-    background-size: 72px 72px;
-    mask-image: radial-gradient(ellipse 75% 70% at 62% 45%, #000 18%, transparent 80%);
-    -webkit-mask-image: radial-gradient(ellipse 75% 70% at 62% 45%, #000 18%, transparent 80%);
+.hero-grid-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: linear-gradient(to right, rgba(243, 244, 247, 0.032) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(243, 244, 247, 0.032) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: radial-gradient(ellipse 75% 70% at 62% 45%, #000 18%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse 75% 70% at 62% 45%, #000 18%, transparent 80%);
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 2;
+  margin-block: auto;
+  padding-block: var(--s-8);
+}
+
+.hero-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.85fr);
+  gap: var(--s-12);
+  align-items: center;
+}
+
+.hero-copy {
+  max-width: 620px;
+}
+
+.hero-card-stage {
+  display: flex;
+  justify-content: flex-end;
+  padding: 18px 18px 8px 0;
+  perspective: 1100px;
+}
+
+.profile-card-stack {
+  position: relative;
+  width: min(100%, 368px);
+  transform-style: preserve-3d;
+  animation: cardDepthEnter 820ms var(--ease) 140ms both;
+}
+
+.profile-card-backdrop {
+  position: absolute;
+  inset: 0;
+  border-radius: 30px;
+  background: linear-gradient(
+    145deg,
+    rgba(243, 244, 247, 0.12) 0%,
+    rgba(243, 244, 247, 0.03) 100%
+  );
+  border: 1px solid rgba(243, 244, 247, 0.1);
+  transform: translate3d(18px, -18px, -24px);
+  transition: transform 380ms var(--ease);
+  animation: plateSlideEnter 900ms var(--ease) 260ms both;
+  pointer-events: none;
+}
+
+.profile-card {
+  position: relative;
+  border-radius: 30px;
+  overflow: hidden;
+  background: linear-gradient(165deg, #161820 0%, #101218 100%);
+  border: 1px solid var(--border-medium);
+  box-shadow: 0 32px 72px -24px rgba(0, 0, 0, 0.82),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16);
+  transform: rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+  transition: transform 280ms var(--ease), border-color var(--t-med) var(--ease);
+  will-change: transform;
+}
+
+.profile-card:hover {
+  border-color: var(--border-strong);
+}
+
+.profile-card-photo-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 4.25;
+  overflow: hidden;
+  border-radius: 0 0 28px 28px;
+  background: #0a0b0e;
+}
+
+.profile-card-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 18%;
+  transition: transform 720ms var(--ease);
+}
+
+.profile-card:hover .profile-card-photo {
+  transform: scale(1.03);
+}
+
+.profile-card-info {
+  padding: 20px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.profile-card-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s-3);
+}
+
+.profile-card-name {
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.profile-card-role {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.profile-card-contacts {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.profile-card-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13.5px;
+  color: var(--text-secondary);
+  transition: color var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
+  min-width: 0;
+}
+
+.profile-card-row svg {
+  color: var(--text-muted);
+  flex-shrink: 0;
+  transition: color var(--t-fast) var(--ease);
+}
+
+.profile-card-row span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.profile-card-row:hover {
+  color: var(--text-primary);
+  transform: translateX(3px);
+}
+
+.profile-card-row:hover svg {
+  color: var(--accent);
+}
+
+/* ── Modern Editorial Entrance Animations ───────────────────────────────── */
+.nav-dock {
+  animation: navDropEnter 680ms var(--ease) both;
+}
+
+.hero-enter {
+  opacity: 0;
+  transform: translateY(20px);
+  filter: blur(6px);
+  animation: heroRiseIn 720ms var(--ease) var(--d, 0ms) forwards;
+}
+
+@keyframes navDropEnter {
+  from {
+    opacity: 0;
+    transform: translateY(-16px) scale(0.98);
   }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
 
-  .hero-scene-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: right center;
-    opacity: 0.92;
-    transform: scale(1.01);
+@keyframes heroRiseIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
 
-    .hero-inner {
-      position: relative;
-      z-index: 2;
-      margin-block: auto;
-      padding-block: var(--s-8);
-    }
+@keyframes cardDepthEnter {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95) rotateX(6deg);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotateX(0deg);
+    filter: blur(0);
+  }
+}
 
-    .hero-scene-vignette {
-      .hero-split {
-        display: grid;
-        grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.85fr);
-        gap: var(--s-12);
-        align-items: center;
-      }
-
-      .hero-copy {
-        max-width: 620px;
-      }
-
-      .hero-card-stage {
-        display: flex;
-        justify-content: flex-end;
-        padding: 18px 18px 8px 0;
-        perspective: 1100px;
-      }
-
-      .profile-card-stack {
-        position: relative;
-        width: min(100%, 368px);
-        transform-style: preserve-3d;
-        animation: cardDepthEnter 820ms var(--ease) 140ms both;
-      }
-
-      .profile-card-backdrop {
-        position: absolute;
-        inset: 0;
-        border-radius: 30px;
-        background: linear-gradient(90deg,
-            rgba(8, 9, 11, 0.96) 0%,
-            rgba(8, 9, 11, 0.84) 38%,
-            rgba(8, 9, 11, 0.28) 68%,
-            rgba(8, 9, 11, 0.14) 100%),
-          linear-gradient(180deg,
-            rgba(8, 9, 11, 0.55) 0%,
-            rgba(8, 9, 11, 0) 24%,
-            rgba(8, 9, 11, 0) 76%,
-            rgba(8, 9, 11, 0.98) 100%);
-        145deg,
-        rgba(243, 244, 247, 0.12) 0%,
-        rgba(243, 244, 247, 0.03) 100%);
-        border: 1px solid rgba(243, 244, 247, 0.1);
-        transform: translate3d(18px, -18px, -24px);
-        transition: transform 380ms var(--ease);
-        animation: plateSlideEnter 900ms var(--ease) 260ms both;
-        pointer-events: none;
-      }
-
-      .hero-inner {
-        .profile-card {
-          position: relative;
-          z-index: 2;
-          margin-block: auto;
-          padding-block: var(--s-12);
-          border-radius: 30px;
-          overflow: hidden;
-          background: linear-gradient(165deg, #161820 0%, #101218 100%);
-          border: 1px solid var(--border-medium);
-          box-shadow: 0 32px 72px -24px rgba(0, 0, 0, 0.82),
-            inset 0 1px 0 rgba(255, 255, 255, 0.16);
-          transform: rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
-          transition: transform 280ms var(--ease), border-color var(--t-med) var(--ease);
-          will-change: transform;
-        }
-
-        .hero-copy {
-          max-width: 640px;
-
-          .profile-card:hover {
-            border-color: var(--border-strong);
-          }
-
-          .profile-card-photo-wrap {
-            position: relative;
-            width: 100%;
-            aspect-ratio: 4 / 4.25;
-            overflow: hidden;
-            border-radius: 0 0 28px 28px;
-            background: #0a0b0e;
-          }
-
-          .profile-card-photo {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center 18%;
-            transition: transform 720ms var(--ease);
-          }
-
-          .profile-card:hover .profile-card-photo {
-            transform: scale(1.03);
-          }
-
-          .profile-card-info {
-            padding: 20px 24px 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-          }
-
-          .profile-card-head {
-            display: flex;
-            align-items: baseline;
-            justify-content: space-between;
-            gap: var(--s-3);
-          }
-
-          .profile-card-name {
-            font-size: 20px;
-            font-weight: 500;
-            letter-spacing: -0.02em;
-            color: var(--text-primary);
-          }
-
-          .profile-card-role {
-            font-family: var(--font-mono);
-            font-size: 11px;
-            color: var(--text-muted);
-            white-space: nowrap;
-          }
-
-          .profile-card-contacts {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-          }
-
-          .profile-card-row {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 13.5px;
-            color: var(--text-secondary);
-            transition: color var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
-            min-width: 0;
-          }
-
-          .profile-card-row svg {
-            color: var(--text-muted);
-            flex-shrink: 0;
-            transition: color var(--t-fast) var(--ease);
-          }
-
-          .profile-card-row span {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-          }
-
-          .profile-card-row:hover {
-            color: var(--text-primary);
-            transform: translateX(3px);
-          }
-
-          .profile-card-row:hover svg {
-            color: var(--accent);
-          }
-
-          /* ── Modern Editorial Entrance Animations ───────────────────────────────── */
-          .nav-dock {
-            animation: navDropEnter 680ms var(--ease) both;
-          }
-
-          .hero-enter {
-            opacity: 0;
-            transform: translateY(20px);
-            filter: blur(6px);
-            animation: heroRiseIn 720ms var(--ease) var(--d, 0ms) forwards;
-          }
-
-          @keyframes navDropEnter {
-            from {
-              opacity: 0;
-              transform: translateY(-16px) scale(0.98);
-            }
-
-            to {
-              opacity: 1;
-              transform: translateY(0) scale(1);
-            }
-          }
-
-          @keyframes heroRiseIn {
-            from {
-              opacity: 0;
-              transform: translateY(20px);
-              filter: blur(6px);
-            }
-
-            to {
-              opacity: 1;
-              transform: translateY(0);
-              filter: blur(0);
-            }
-          }
-
-          @keyframes cardDepthEnter {
-            from {
-              opacity: 0;
-              transform: translateY(30px) scale(0.95) rotateX(6deg);
-              filter: blur(6px);
-            }
-
-            to {
-              opacity: 1;
-              transform: translateY(0) scale(1) rotateX(0deg);
-              filter: blur(0);
-            }
-          }
-
-          @keyframes plateSlideEnter {
-            from {
-              opacity: 0;
-              transform: translate3d(0, 0, -24px);
-            }
-
-            to {
-              opacity: 1;
-              transform: translate3d(18px, -18px, -24px);
-            }
-          }
+@keyframes plateSlideEnter {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 0, -24px);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(18px, -18px, -24px);
+  }
+}
 
           .status-line {
             display: inline-flex;
@@ -1662,26 +1631,21 @@
             }
 
             .hero {
-              padding-top: 104px;
               padding-top: 96px;
             }
 
-            .hero-scene-img {
-              object-position: 72% center;
-              opacity: 0.6;
+            .hero-card-stage {
+              justify-content: center;
+              padding: 14px 14px 4px 0;
+            }
 
-              .hero-card-stage {
-                justify-content: center;
-                padding: 14px 14px 4px 0;
-              }
+            .profile-card-stack {
+              width: min(100%, 340px);
+            }
 
-              .profile-card-stack {
-                width: min(100%, 340px);
-              }
-
-              .profile-card-backdrop {
-                transform: translate3d(12px, -12px, -24px);
-              }
+            .profile-card-backdrop {
+              transform: translate3d(12px, -12px, -24px);
+            }
 
               .hero-metrics {
                 grid-template-columns: 1fr;
