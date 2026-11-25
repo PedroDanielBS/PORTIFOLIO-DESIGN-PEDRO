@@ -174,10 +174,24 @@ def require_admin_session(request: Request) -> dict[str, Any]:
 # Public Pages & Local Upload Serving
 # ─────────────────────────────────────────────────────────────────────────────
 
+from html import escape as html_escape
+
 @app.get("/", response_class=HTMLResponse)
 async def public_home() -> HTMLResponse:
     html = (TEMPLATES_DIR / "index.html").read_text(encoding="utf-8")
-    return HTMLResponse(content=html)
+    avatar = "/static/assets/pedro-profile.jpg"
+    try:
+        profile = store.get_profile()
+        saved = (profile.get("avatar_url") or "").strip()
+        if saved.startswith(("/", "https://", "http://")):
+            avatar = saved
+    except Exception:
+        pass
+    html = html.replace("__PROFILE_PHOTO_URL__", html_escape(avatar, quote=True))
+    return HTMLResponse(
+        content=html,
+        headers={"Cache-Control": "no-store, no-cache, must-revalidate"},
+    )
 
 
 @app.get("/uploads/{filename}")
