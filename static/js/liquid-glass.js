@@ -26,6 +26,63 @@ export function initLiquidGlass(root = document) {
   });
 }
 
+export function initProfileCardTilt() {
+  const stack = document.getElementById("profile-card-stack");
+  const card = document.getElementById("profile-card");
+  const backdrop = stack?.querySelector(".profile-card-backdrop");
+  if (!stack || !card || window.matchMedia("(pointer: coarse)").matches) return;
+
+  let raf = null;
+  let rx = 0;
+  let ry = 0;
+  let bx = 18;
+  let by = -18;
+
+  const apply = () => {
+    card.style.setProperty("--tilt-x", `${rx.toFixed(2)}deg`);
+    card.style.setProperty("--tilt-y", `${ry.toFixed(2)}deg`);
+    if (backdrop) {
+      backdrop.style.transform = `translate3d(${bx.toFixed(1)}px, ${by.toFixed(1)}px, -24px)`;
+    }
+    raf = null;
+  };
+
+  stack.addEventListener("pointermove", (e) => {
+    const rect = card.getBoundingClientRect();
+    if (!rect.width || !rect.height) return;
+    const nx = (e.clientX - rect.left) / rect.width - 0.5;
+    const ny = (e.clientY - rect.top) / rect.height - 0.5;
+    ry = nx * 7.5;
+    rx = -ny * 7.5;
+    bx = 18 - nx * 10;
+    by = -18 - ny * 10;
+    if (!raf) raf = requestAnimationFrame(apply);
+  });
+
+  stack.addEventListener("pointerleave", () => {
+    rx = 0;
+    ry = 0;
+    bx = 18;
+    by = -18;
+    if (!raf) raf = requestAnimationFrame(apply);
+  });
+}
+
+export function animateNumber(el, target, { pad = 2, suffix = "", duration = 680 } = {}) {
+  if (!el) return;
+  const end = Number(target) || 0;
+  const startTs = performance.now();
+  const easeOut = (t) => 1 - Math.pow(1 - t, 3);
+
+  function frame(now) {
+    const progress = Math.min(1, (now - startTs) / duration);
+    const val = Math.round(end * easeOut(progress));
+    el.textContent = `${String(val).padStart(pad, "0")}${suffix}`;
+    if (progress < 1) requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+}
+
 export function initRevealObserver(root = document) {
   const els = root.querySelectorAll(".reveal:not(.is-visible)");
   if (!("IntersectionObserver" in window)) {
